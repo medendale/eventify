@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { createUser } from '@/lib/actions/user.actions'
+import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
  
@@ -54,34 +54,31 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
  
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
-  console.log('Webhook body:', body)
-
-  if (eventType === "user.created") {
-    // Do something with the user created event
-    const { id,email_addresses, image_url, first_name, last_name, username } = evt.data;
-    // Save the user to the database
+  if(eventType === 'user.created') {
+    const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
     const user = {
-        clerkId: id,
-        email: email_addresses[0].email_address,
-        photo: image_url,
-        firstName: first_name,
-        lastName: last_name,
-        username: username!
-        }
+      clerkId: id,
+      email: email_addresses[0].email_address,
+      username: username!,
+      firstName: first_name,
+      lastName: last_name,
+      photo: image_url,
+    }
 
-        const newUser = await createUser(user);
+    const newUser = await createUser(user);
 
-        if(newUser){
-            await clerkClient.users.updateUserMetadata(id, {
-                publicMetadata: {
-                    userId: newUser._id
-                }
-             })
+    if(newUser) {
+      await clerkClient.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id
         }
-        return NextResponse.json({ message: "ok" , user: newUser})
+      })
+    }
+
+    return NextResponse.json({ message: 'OK', user: newUser })
   }
+
   if (eventType === 'user.updated') {
     const {id, image_url, first_name, last_name, username } = evt.data
 
@@ -92,7 +89,7 @@ export async function POST(req: Request) {
       photo: image_url,
     }
 
-    const updatedUser = await updatedUser(id, user)
+    const updatedUser = await updateUser(id, user)
 
     return NextResponse.json({ message: 'OK', user: updatedUser })
   }
