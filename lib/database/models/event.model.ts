@@ -31,6 +31,10 @@ const EventSchema = new Schema({
   organizer: { type: Schema.Types.ObjectId, ref: 'User' },
 })
 
+// Define Category and User models if not already defined
+const Category = models.Category || model('Category', new Schema({ /* schema definition for Category */ }));
+const User = models.User || model('User', new Schema({ /* schema definition for User */ }));
+
 const Event = models.Event || model('Event', EventSchema);
 
 export default Event;
