@@ -58,13 +58,13 @@ const ProfilePage = async () => {
          <section className='wrapper my-8'>
          <Collection 
           data={organizedEvents?.data}
-          emptyTitle="No Events Have been Created yet"
-          emptyStateSubtext="Go Create New Events Now"
+          emptyTitle="No events have been created yet"
+          emptyStateSubtext="Go create some now"
           collectionType="Events_Organized"
-          limit={6}
+          limit={3}
           page={1}
-          urlParamsName='eventsPage'
-          totalPages={2}
+        //   urlParamName="eventsPage"
+          totalPages={organizedEvents?.totalPages}
         />
 
          </section>
