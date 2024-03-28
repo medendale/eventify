@@ -233,6 +233,8 @@ body {
 /* ========================================== CLERK STYLES */
 .cl-logoImage {
   height: 38px;
+  width: auto;
+  height: auto;
 }
 
 .cl-userButtonBox {
