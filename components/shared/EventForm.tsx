@@ -34,8 +34,8 @@ const EventForm = ({ userId, type, event,eventId}: EventFormProps) => {
     const [files, setFiles] = useState<File[]>([])
     const initialValues = event&& type === 'Update'
     ? {...event,
-      startDateTIme: new Date(event.startDateTime),
-      endDateTIme: new Date(event.endDateTime)
+      startDateTime: new Date(event.startDateTime),
+      endDateTime: new Date(event.endDateTime)
     }
     :eventDefaultValues;
     const router = useRouter()
@@ -67,8 +67,8 @@ const EventForm = ({ userId, type, event,eventId}: EventFormProps) => {
           const newEvent = await createEvent({
             event: {
               ...values, imageUrl: uploadedImageUrl,
-              startDateTime: values.startDateTIme,
-              endDateTime: values.endDateTIme
+              startDateTime: values.startDateTime,
+              endDateTime: values.endDateTime
             },
             userId,
             path: '/profile'
@@ -196,7 +196,7 @@ const EventForm = ({ userId, type, event,eventId}: EventFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
               control={form.control}
-              name="startDateTIme"
+              name="startDateTime"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
@@ -227,7 +227,7 @@ const EventForm = ({ userId, type, event,eventId}: EventFormProps) => {
         
           <FormField
               control={form.control}
-              name="endDateTIme"
+              name="endDateTime"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
